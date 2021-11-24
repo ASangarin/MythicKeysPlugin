@@ -1,0 +1,16 @@
+name: MythicKeysPlugin
+version: '${project.version}'
+main: eu.asangarin.mythickeys.MythicKeysPlugin
+api-version: 1.17
+author: ASangarin
+description: MythicKeysPlugin lets your server receive keybind presses from the MythicKeys client.
+commands:
+    mythickeys:
+        description: The main command for MythicKeys.
+        aliases: mk
+        permission: mythickeys.admin
+        usage: "Usage: /mythickeys [reload|info]"
+permissions:
+    mythickeys.admin:
+        description: The main permission for MythicKeys.
+        default: op

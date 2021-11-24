@@ -1,0 +1,17 @@
+# MythicKeysPlugin
+# Made by Aria Sangarin
+
+# Input your desired keys here and the client mod
+# will automatically grab these from the server and
+# allow the player to use, see and customize them.
+Keys:
+    example_key: # Purely for organization. Can be named anything.
+        Id: 0 # The ID of the pressed key is passed to the event
+        Name: "Example Key" # The name of this keybinding as displayed in the settings
+        Category: "Example Category" # The category this key falls under in the settings
+        DefaultKey: 74 # The default keybinding to use. See https://www.glfw.org/docs/latest/group__keys.html (74 is J)
+    another_key:
+        Id: 1 # Each key should have a unique ID, unless you want multiple keys to have the same effect
+        Name: "Another Key"
+        Category: "Example Category"
+        DefaultKey: 77 # 77 is the M key

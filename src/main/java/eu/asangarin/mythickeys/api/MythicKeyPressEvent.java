@@ -1,0 +1,24 @@
+package eu.asangarin.mythickeys.api;
+
+import lombok.Getter;
+import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.player.PlayerEvent;
+import org.jetbrains.annotations.NotNull;
+
+public class MythicKeyPressEvent extends PlayerEvent {
+	@Getter
+	private static final HandlerList handlerList = new HandlerList();
+	@Getter
+	private final int id;
+
+	public MythicKeyPressEvent(Player player, int id) {
+		super(player);
+		this.id = id;
+	}
+
+	@Override
+	public @NotNull HandlerList getHandlers() {
+		return handlerList;
+	}
+}
