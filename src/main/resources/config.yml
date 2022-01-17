@@ -20,7 +20,7 @@ Keys:
         # There is also support for all PAPI placeholders.
         # If you don't want the key to run a command (for external plugin support), just leave it empty.
     another_key:
-        Id: examplekeytwo # A key without a namespace will simply use the default namespace.
+        Id: "examplekeytwo" # A key without a namespace will simply use the default namespace.
         #This example ID will become: "mythickeysplugin:examplekeytwo"
         Name: "Another Key"
         Category: "Example Category"
