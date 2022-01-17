@@ -4,6 +4,7 @@ import eu.asangarin.mythickeys.api.MythicKeyPressEvent;
 import eu.asangarin.mythickeys.config.MythicKeyInfo;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.jetbrains.annotations.NotNull;
@@ -25,27 +26,23 @@ public class MKListener implements PluginMessageListener {
 	public void receiveKeyPress(Player player, DataInputStream buf) {
 		try {
 			// Read the key press ID then call the MythicKeyPress event.
-			int id = buf.readInt();
+			String namespace = buf.readUTF();
+			String key = buf.readUTF();
+			NamespacedKey id = NamespacedKey.fromString(namespace + ":" + key);
 
-			if (MythicKeysPlugin.get().getConf().getKeyCommands().containsKey(id)) {
-				runCommand(player, MythicKeysPlugin.get().getConf().getKeyCommands().get(id));
-				if (MythicKeysPlugin.get().getConf().isEventOnCommand()) Bukkit.getPluginManager().callEvent(new MythicKeyPressEvent(player, id));
-				return;
+			if (MythicKeysPlugin.get().getConf().getKeyInfoList().containsKey(id)) {
+				MythicKeyInfo info = MythicKeysPlugin.get().getConf().getKeyInfoList().get(id);
+
+				if(info.runCommand(player)) {
+					if (MythicKeysPlugin.get().getConf().isEventOnCommand()) Bukkit.getPluginManager().callEvent(new MythicKeyPressEvent(player, id));
+					return;
+				}
+
+				Bukkit.getPluginManager().callEvent(new MythicKeyPressEvent(player, id));
 			}
-
-			Bukkit.getPluginManager().callEvent(new MythicKeyPressEvent(player, id));
 		} catch (IOException ignored) {
 			// Exception is ignored.
 		}
-	}
-
-	private void runCommand(Player player, String cmd) {
-		final boolean isAdmin = cmd.startsWith("!");
-		String command = (isAdmin ? cmd.substring(1) : cmd).replace("%player%", player.getName());
-		if (MythicKeysPlugin.get().papi) command = PlaceholderAPI.setPlaceholders(player, command);
-
-		if (isAdmin) Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
-		else Bukkit.dispatchCommand(player, command);
 	}
 
 	public void receiveGreeting(Player player) {
@@ -53,7 +50,7 @@ public class MKListener implements PluginMessageListener {
 		 client. This is delayed to make sure the client is properly
 		 connected before attempting to send any data over. */
 		Bukkit.getScheduler().runTaskLater(MythicKeysPlugin.get(), () -> {
-			for (MythicKeyInfo info : MythicKeysPlugin.get().getConf().getKeyInfoList())
+			for (MythicKeyInfo info : MythicKeysPlugin.get().getConf().getKeyInfoList().values())
 				sendKeyInformation(player, info.getId(), info.getDef(), info.getName(), info.getCategory());
 			/* Send the "load" packet after sending every keybinding packet, to tell
 			 the client to load all the user-specific keybinds saved on their machine. */
@@ -62,11 +59,12 @@ public class MKListener implements PluginMessageListener {
 	}
 
 	// Simply send over the information in an add key packet.
-	public void sendKeyInformation(Player player, int id, int def, String name, String category) {
+	public void sendKeyInformation(Player player, NamespacedKey id, int def, String name, String category) {
 		ByteArrayOutputStream b = new ByteArrayOutputStream();
 		DataOutputStream out = new DataOutputStream(b);
 		try {
-			out.writeInt(id);
+			out.writeUTF(id.getNamespace());
+			out.writeUTF(id.getKey());
 			out.writeInt(def);
 			out.writeUTF(name);
 			out.writeUTF(category);
