@@ -7,6 +7,12 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * The Event will fire every tick that a button is held down.
+ * If a button was just pressed the isHeld() method will
+ * return false, and then true on the next ticks, until the
+ * button has been released and is pressed yet again.
+ */
 public class MythicKeyPressEvent extends PlayerEvent {
 	@Getter
 	private static final HandlerList handlerList = new HandlerList();
