@@ -2,7 +2,6 @@ package eu.asangarin.mythickeys;
 
 import eu.asangarin.mythickeys.api.MythicKeyPressEvent;
 import eu.asangarin.mythickeys.config.MythicKeyInfo;
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -33,8 +32,9 @@ public class MKListener implements PluginMessageListener {
 			if (MythicKeysPlugin.get().getConf().getKeyInfoList().containsKey(id)) {
 				MythicKeyInfo info = MythicKeysPlugin.get().getConf().getKeyInfoList().get(id);
 
-				if(info.runCommand(player)) {
-					if (MythicKeysPlugin.get().getConf().isEventOnCommand()) Bukkit.getPluginManager().callEvent(new MythicKeyPressEvent(player, id));
+				if (info.runCommand(player)) {
+					if (MythicKeysPlugin.get().getConf().isEventOnCommand())
+						Bukkit.getPluginManager().callEvent(new MythicKeyPressEvent(player, id));
 					return;
 				}
 
