@@ -2,6 +2,7 @@ package eu.asangarin.mythickeys;
 
 import eu.asangarin.mythickeys.api.MythicKeyPressEvent;
 import eu.asangarin.mythickeys.config.MythicKeyInfo;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
@@ -25,10 +26,26 @@ public class MKListener implements PluginMessageListener {
 		try {
 			// Read the key press ID then call the MythicKeyPress event.
 			int id = buf.readInt();
+
+			if (MythicKeysPlugin.get().getConf().getKeyCommands().containsKey(id)) {
+				runCommand(player, MythicKeysPlugin.get().getConf().getKeyCommands().get(id));
+				if (MythicKeysPlugin.get().getConf().isEventOnCommand()) Bukkit.getPluginManager().callEvent(new MythicKeyPressEvent(player, id));
+				return;
+			}
+
 			Bukkit.getPluginManager().callEvent(new MythicKeyPressEvent(player, id));
 		} catch (IOException ignored) {
 			// Exception is ignored.
 		}
+	}
+
+	private void runCommand(Player player, String cmd) {
+		final boolean isAdmin = cmd.startsWith("!");
+		String command = (isAdmin ? cmd.substring(1) : cmd).replace("%player%", player.getName());
+		if (MythicKeysPlugin.get().papi) command = PlaceholderAPI.setPlaceholders(player, command);
+
+		if (isAdmin) Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+		else Bukkit.dispatchCommand(player, command);
 	}
 
 	public void receiveGreeting(Player player) {

@@ -14,6 +14,8 @@ public final class MythicKeysPlugin extends JavaPlugin {
 	private final MKConfig conf = new MKConfig();
 	private final MKListener mkl = new MKListener();
 
+	public boolean papi;
+
 	@Override
 	public void onEnable() {
 		plugin = this;
@@ -30,6 +32,8 @@ public final class MythicKeysPlugin extends JavaPlugin {
 			command.setExecutor(cmd);
 			command.setTabCompleter(cmd);
 		}
+
+		papi = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
 
 		saveDefaultConfig();
 		reload();
