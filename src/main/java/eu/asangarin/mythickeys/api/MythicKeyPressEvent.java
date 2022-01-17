@@ -12,10 +12,13 @@ public class MythicKeyPressEvent extends PlayerEvent {
 	private static final HandlerList handlerList = new HandlerList();
 	@Getter
 	private final NamespacedKey id;
+	@Getter
+	private final boolean held;
 
-	public MythicKeyPressEvent(Player player, NamespacedKey id) {
+	public MythicKeyPressEvent(Player player, NamespacedKey id, boolean held) {
 		super(player);
 		this.id = id;
+		this.held = held;
 	}
 
 	@Override
