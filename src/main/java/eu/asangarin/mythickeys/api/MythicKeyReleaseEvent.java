@@ -7,13 +7,13 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 import org.jetbrains.annotations.NotNull;
 
-public class MythicKeyPressEvent extends PlayerEvent {
+public class MythicKeyReleaseEvent extends PlayerEvent {
 	@Getter
 	private static final HandlerList handlerList = new HandlerList();
 	@Getter
 	private final NamespacedKey id;
 
-	public MythicKeyPressEvent(Player player, NamespacedKey id) {
+	public MythicKeyReleaseEvent(Player player, NamespacedKey id) {
 		super(player);
 		this.id = id;
 	}
