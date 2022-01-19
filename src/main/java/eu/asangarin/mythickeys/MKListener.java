@@ -28,13 +28,13 @@ public class MKListener implements PluginMessageListener {
 			// Read the key press ID then call the MythicKeyPress event.
 			String namespace = buf.readUTF();
 			String key = buf.readUTF();
-			boolean release = buf.readBoolean();
+			boolean firstPress = !buf.readBoolean();
 			NamespacedKey id = NamespacedKey.fromString(namespace + ":" + key);
 
 			if (MythicKeysPlugin.get().getConf().getKeyInfoList().containsKey(id)) {
 				MythicKeyInfo info = MythicKeysPlugin.get().getConf().getKeyInfoList().get(id);
 
-				if (!release && info.runCommand(player)) {
+				if (firstPress && info.runCommand(player)) {
 					if (MythicKeysPlugin.get().getConf().isEventOnCommand())
 						Bukkit.getPluginManager().callEvent(new MythicKeyPressEvent(player, id));
 					return;
