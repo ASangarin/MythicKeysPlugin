@@ -46,4 +46,8 @@ public class MythicKeyInfo {
 		else Bukkit.dispatchCommand(player, cmd);
 		return true;
 	}
+
+	public boolean hasCommand() {
+		return command != null && !command.isEmpty();
+	}
 }
