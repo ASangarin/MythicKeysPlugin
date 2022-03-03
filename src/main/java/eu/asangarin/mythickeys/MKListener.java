@@ -37,10 +37,12 @@ public class MKListener implements PluginMessageListener {
 
 				if (firstPress) {
 					if (!info.runCommand(player) || eventCmd) Bukkit.getPluginManager().callEvent(new MythicKeyPressEvent(player, id, true));
+					info.mmSkill(player, true);
 					return;
 				}
 
 				if (!info.hasCommand() || eventCmd) Bukkit.getPluginManager().callEvent(new MythicKeyReleaseEvent(player, id, true));
+				info.mmSkill(player, false);
 			} else {
 				Bukkit.getPluginManager()
 						.callEvent(firstPress ? new MythicKeyPressEvent(player, id, false) : new MythicKeyReleaseEvent(player, id, false));

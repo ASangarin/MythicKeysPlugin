@@ -14,7 +14,7 @@ public final class MythicKeysPlugin extends JavaPlugin {
 	private final MKConfig conf = new MKConfig();
 	private final MKListener mkl = new MKListener();
 
-	public boolean papi;
+	public boolean papi, mm;
 
 	@Override
 	public void onEnable() {
@@ -34,6 +34,7 @@ public final class MythicKeysPlugin extends JavaPlugin {
 		}
 
 		papi = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
+		mm = Bukkit.getPluginManager().getPlugin("MythicMobs") != null;
 
 		saveDefaultConfig();
 		reload();

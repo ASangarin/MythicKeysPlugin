@@ -1,6 +1,7 @@
 package eu.asangarin.mythickeys.config;
 
 import eu.asangarin.mythickeys.MythicKeysPlugin;
+import eu.asangarin.mythickeys.compat.MythicMobsCompat;
 import lombok.Getter;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
@@ -11,16 +12,18 @@ import org.jetbrains.annotations.Nullable;
 
 @Getter
 public class MythicKeyInfo {
-	private MythicKeyInfo(NamespacedKey id, String name, String category, int def, String command) {
+	private MythicKeyInfo(NamespacedKey id, String name, String category, int def, String command, String mythicPress, String mythicRelease) {
 		this.id = id;
 		this.name = name;
 		this.category = category;
 		this.def = def;
 		this.command = command;
+		this.mythicPress = mythicPress;
+		this.mythicRelease = mythicRelease;
 	}
 
 	private final NamespacedKey id;
-	private final String name, category, command;
+	private final String name, category, command, mythicPress, mythicRelease;
 	private final int def;
 
 	// Using a static method to insert KeyInfo verification code.
@@ -30,7 +33,7 @@ public class MythicKeyInfo {
 			if (key == null) return null;
 
 			return new MythicKeyInfo(key, config.getString("Name"), config.getString("Category"), config.getInt("DefaultKey"),
-					config.getString("RunCommand", ""));
+					config.getString("RunCommand", ""), config.getString("SkillPress", ""), config.getString("SkillRelease", ""));
 		}
 		return null;
 	}
@@ -49,5 +52,10 @@ public class MythicKeyInfo {
 
 	public boolean hasCommand() {
 		return command != null && !command.isEmpty();
+	}
+
+	public void mmSkill(Player player, boolean press) {
+		if (!MythicKeysPlugin.get().mm) return;
+		MythicMobsCompat.runSkill(press ? mythicPress : mythicRelease, player);
 	}
 }
