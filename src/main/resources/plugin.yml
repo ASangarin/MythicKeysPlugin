@@ -4,7 +4,7 @@ main: eu.asangarin.mythickeys.MythicKeysPlugin
 api-version: 1.17
 author: ASangarin
 description: MythicKeysPlugin lets your server receive keybind presses from the MythicKeys client.
-softdepend: [PlaceholderAPI]
+softdepend: [PlaceholderAPI, MythicMobs]
 commands:
     mythickeys:
         description: The main command for MythicKeys.
