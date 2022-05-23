@@ -22,7 +22,7 @@ Keys:
 
         # You can remove [CD] and [CdCommand] if you don't want it
         CD: 500
-        # The Cooldown of this key
+        # The Cooldown of this key (Millisecond)
         CdCommand: "!msg %player% Cooling! (%s%)"
         # If it is cooling, then send this.
         # %s% for second, %ms% for millisecond

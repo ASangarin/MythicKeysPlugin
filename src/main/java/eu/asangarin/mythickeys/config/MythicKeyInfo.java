@@ -46,21 +46,29 @@ public class MythicKeyInfo {
 		return cd > 0;
 	}
 
+	public boolean isCooling(Player player) {
+		return CoolDown.isCooling(player.getUniqueId(), id.getKey());
+	}
+
+	public void setCd(Player player) {
+		CoolDown.setCdToMsLater(player.getUniqueId(), id.getKey(), cd);
+	}
+
 	public boolean hasCdCmd() {
 		return cdCmd != null && !cdCmd.isEmpty();
 	}
 
-	public void runCdCmd(Player player, String key) {
+	public void runCdCmd(Player player) {
 		if (!hasCdCmd()) return;
 
 		final boolean isAdmin = cdCmd.startsWith("!");
 		String cmd = (isAdmin ? cdCmd.substring(1) : cdCmd).replace("%player%", player.getName());
 		if (cmd.contains("%s%")) {
-			Long cdLeft = CoolDown.getCdLeft(player.getUniqueId(), key);
+			Long cdLeft = CoolDown.getCdLeft(player.getUniqueId(), id.getKey());
 			cmd = cmd.replaceAll("%s%", String.valueOf(cdLeft/1000));
 		}
 		if (cmd.contains("%ms%")) {
-			Long cdLeft = CoolDown.getCdLeft(player.getUniqueId(), key);
+			Long cdLeft = CoolDown.getCdLeft(player.getUniqueId(), id.getKey());
 			cmd = cmd.replaceAll("%ms%", String.valueOf(cdLeft));
 		}
 		if (MythicKeysPlugin.get().papi) cmd = PlaceholderAPI.setPlaceholders(player, cmd);

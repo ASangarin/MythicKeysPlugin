@@ -14,7 +14,7 @@ public class CoolDown {
     private static final ConcurrentHashMap<UUID, Map<String, Long>> cdMap = new ConcurrentHashMap<>();
 
     public static boolean isCooling(UUID playerUUID, String keyID) {
-        return getKeyMap(playerUUID).getOrDefault(keyID, 0L) > now();
+        return getKeyMap(playerUUID).getOrDefault(keyID, 0L) >= now();
     }
 
     public static Long getCdLeft(UUID playerUUID, String keyID) {
